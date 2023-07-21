@@ -1,0 +1,192 @@
+---
+- name: Install fish shell and set it as the default shell
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: Update apt chache 
+      apt:
+        update_cache: yes
+
+    - name: Install Fish Shell
+      apt:
+        name: fish
+        state: present
+
+    - name: Set Fish Shell as the default shell
+      user: 
+        name: drachir
+        shell: /usr/bin/fish
+
+    - name: Set Fish Shell for root as well
+      become: yes
+      user:
+        name: root
+        shell: /usr/bin/fish
+        
+- name: Install i3 as default window manager for xrdp
+  hosts: localhost
+  tasks:
+    - name: Update apt chache 
+      become: yes
+      apt:
+        update_cache: yes
+
+    - name: Install i3 window manager
+      become: yes
+      apt:
+        name: i3
+        state: present
+
+    - name: configure i3 as default window manager
+      become: yes
+      command: 
+
+    - name: Restart XRDP
+      become: yes
+      service:
+        name: xrdp
+        state: restarted
+
+- name: set X Keyboard to default US keyboard
+  hosts: localhost 
+  become: yes
+  tasks:
+    - name: Set the X Keyboard to the default US layout
+      become: yes
+      lineinfile:
+        path: /etc/default/keyboard
+        regexp: '^XKBLAYOUT='
+        line: 'XKBLAYOUT="us'
+    - name: Change default non us keyboard to US
+      become: yes
+      debconf:
+        name: keyboard-configuration
+        question: keyboard-configuration/xkb-keymap
+        value: us
+        vtype: select
+
+- name: install urxvt, polybar and configure  i3
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: install urxvt, polybar and feh
+      apt:
+        name: 
+          - rxvt-unicode
+          - polybar
+          - feh
+        state: present
+
+    - name: configure urxvt to not be ugly
+      copy:
+        content: |
+          urxvt.font: xft:Inconsolata:pixelsize=18
+          urxvt.transparent: true
+          urxvt.shading: 10
+          urxvt.scrollBar: False
+          *.foreground: #b9b9b9
+          *.background: #101010
+          *.cursorColor: #b9b9b9
+          *.color0: #101010
+          *.color8: #525252
+          *.color1: #7c7c7c
+          *.color9: #7c7c7c
+          *.color2: #8e8e8e
+          *.color10: #8e8e8e
+          *.color3: #a0a0a0
+          *.color11: #a0a0a0
+          *.color4: #686868
+          *.color12: #686868
+          *.color5: #747474
+          *.color13: #747474
+          *.color6: #868686
+          *.color14: #868686
+          *.color7: #b9b9b9
+          *.color15: #f7f7f7
+        dest: /home/drachir/.Xdefaults
+
+    - name: set as default terminal for user drachir
+      copy:
+        content: |
+          #!/bin/sh
+          set $mod Mod1
+          font pango:monospace 12
+          exec --no-startup-id dex --autostart --environment i3
+          exec --no-startup-id nm-applet
+          set $refresh_i3status killall -SIGUSR1 i3status
+          floating_modifier $mod
+          bindsym  $mod+Return exec urxvt
+          bindsym $mod+p exec --no-startup-id dmenu_run
+          bindsym $mod+Shift+c kill
+          bindsym $mod+h focus left
+          bindsym $mod+j focus down
+          bindsym $mod+k focus up
+          bindsym $mod+l focus right
+          bindsym $mod+f fullscreen toggle
+          exec_always --no-startup-id /home/drachir/.config/polybar/launch.sh
+          exec_always --no-startup-id feh --bg-fill /home/drachir/Bilder/bg.jpg
+        dest: /home/drachir/.config/i3/config
+    - name: setup that i3 can launch polybar
+      copy:
+        content: |
+          #!/bin/bash
+          killall -q polybar
+          polybar --config=/home/drachir/.config/polybar/config.ini mybar 2>&1 | tee /tmp/polybar.log & disown
+        dest: /home/drachir/.config/polybar/launch.sh
+        mode: '0755'
+    - name: configure polybar
+      copy:
+        content: |
+          [bar/mybar]
+          modules-right = date
+          [module/date]
+          type = internal/date
+          date= %Y-%m-%d
+        dest: /home/drachir/.config/polybar/config.ini
+        
+
+- name: install shell goodies and set them as default
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: install exa, batcat and ack 
+      apt:
+        name:
+          - bat
+          - exa
+          - ack
+          - tmux
+          - neovim
+        state: present
+
+    - name: install common dev packets
+      apt:
+        name:
+          - black
+          - isort
+          - flake8
+          - xclip
+
+    - name: configure fish shell to use goodies
+      copy:
+        content: |
+          set -g fish_greeting
+          alias less 'batcat'
+          alias cat 'batcat' 
+          alias ls 'exa'
+          alias vim 'nvim'
+          alias xclip 'xclip -selection c'
+        dest: /home/drachir/.config/fish/config.fish
+
+    - name: ensure that neovim config folder exists
+      file:
+        path: /home/drachir/.config/nvim
+        state: directory
+
+    - name: configure neovim to actually be usefull
+      copy:
+        content: |
+          vim.opt.shiftwidth = 4
+          vim.opt.tabstop = 4
+          vim.cmd [[ imap jj <ESC> ]]
+        dest: /home/drachir/.config/nvim/init.lua
