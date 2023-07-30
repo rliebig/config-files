@@ -69,12 +69,13 @@
   hosts: localhost
   become: yes
   tasks:
-    - name: install urxvt, polybar and feh
+    - name: install urxvt, polybar, tmux and feh
       apt:
         name: 
           - rxvt-unicode
           - polybar
           - feh
+          - tmux
         state: present
 
     - name: configure urxvt to not be ugly
@@ -104,7 +105,53 @@
           *.color7: #b9b9b9
           *.color15: #f7f7f7
         dest: /home/drachir/.Xdefaults
+    - name: configure tmux to be actually usable
+      copy:
+        content:
+          set -g prefix C-a
+          unbind C-b
+          set -s escape-time 1
+          bind C-a send-prefix
+          set -g base-index 1
+          setw -g pane-base-index 1
 
+          bind | split-window -h
+          bind - split-window -v
+
+          bind -n M-h select-pane -L
+          bind -n M-j select-pane -D
+          bind -n M-k select-pane -U
+          bind -n M-l select-pane -R
+
+          bind -r H resize-pane -L 5
+          bind -r J resize-pane -D 5
+          bind -r K resize-pane -U 5
+          bind -r L resize-pane -R 5
+
+          set -g default-terminal "screen-256color"
+
+          set -g status-style fg=cyan,bg=black
+          setw -g monitor-activity on
+          setw -g mode-keys vi
+          set -g history-limit 10000
+
+          set -g status-style 'bg=orange fg=colour137 dim'
+          set -g status-left ''
+          set -g status-right "#(ip addr show dev tun0 | grep 'inet[^6]' | awk \'{ print $2 }\')#[fg=black,bg=colour19] %d/%m #[fg=colour233,bg=colour8] %H:%M:%S "
+          set -g status-right-length 80
+          set -g status-left-length 20
+          set -g status-style 'bg=orange fg=colour137 dim'
+          setw -g window-status-current-style 'fg=colour1 bg=colour19 bold'
+          setw -g window-status-current-format ' #I#[fg=colour249]:#[fg=colour255]#W#[fg=colour249]#F '
+          setw -g window-status-style 'fg=colour9 bg=colour18'
+          setw -g window-status-format ' #I#[fg=colour237]:#[fg=colour250]#W#[fg=colour244]#F '
+
+          setw -g window-status-bell-style 'fg=colour255 bg=colour1 bold'
+
+          set-option -g status-position bottom
+          bind-key C send-keys " | xclip -selection clipboard"
+        dest: /home/drachir/.tmux.conf
+        
     - name: set as default terminal for user drachir
       copy:
         content: |
