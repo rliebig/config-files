@@ -202,7 +202,6 @@
           - bat
           - exa
           - ack
-          - tmux
           - neovim
         state: present
 
