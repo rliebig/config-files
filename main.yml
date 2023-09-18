@@ -69,12 +69,13 @@
   hosts: localhost
   become: yes
   tasks:
-    - name: install urxvt, polybar, tmux and feh
+    - name: install urxvt, polybar, tmux, xsecurelock and feh
       apt:
         name: 
           - rxvt-unicode
           - polybar
           - feh
+          - xsecurelock
           - tmux
         state: present
 
@@ -170,6 +171,7 @@
           bindsym $mod+k focus up
           bindsym $mod+l focus right
           bindsym $mod+f fullscreen toggle
+          bindsym Mod4+l exec "setxkbmap us; xsecurelock"
           exec_always --no-startup-id /home/drachir/.config/polybar/launch.sh
           exec_always --no-startup-id feh --bg-fill /home/drachir/Bilder/bg.jpg
         dest: /home/drachir/.config/i3/config
