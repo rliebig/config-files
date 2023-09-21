@@ -81,7 +81,11 @@
           - gawk
           - gnupg
           - cron
+          - fail2ban
+          - apt-listchanges
+          - needrestart
           - unattended-upgrades
+          - libpam-tmpdir
         state: present
 
     - name: configure urxvt to not be ugly
