@@ -77,6 +77,10 @@
           - feh
           - xsecurelock
           - tmux
+          - curl
+          - gawk
+          - gnupg
+          - cron
         state: present
 
     - name: configure urxvt to not be ugly
@@ -223,3 +227,7 @@
           vim.opt.tabstop = 4
           vim.cmd [[ imap jj <ESC> ]]
         dest: /home/drachir/.config/nvim/init.lua
+    - name: install hosty and ensure adds are blocked
+      command: curl -L git.io/hosty | sh
+    - name: run hosty to ensure add blocks are in place
+      command: sudo hosty
