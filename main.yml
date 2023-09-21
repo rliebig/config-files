@@ -69,11 +69,11 @@
   hosts: localhost
   become: yes
   tasks:
-    - name: install urxvt, polybar, tmux, xsecurelock and feh
+    - name: install alacritty, tmux, xsecurelock and feh
       apt:
         name: 
-          - rxvt-unicode
-          - polybar
+          - alacritty
+          - rofi
           - feh
           - xsecurelock
           - tmux
@@ -163,8 +163,12 @@
           exec --no-startup-id nm-applet
           set $refresh_i3status killall -SIGUSR1 i3status
           floating_modifier $mod
-          bindsym  $mod+Return exec urxvt
-          bindsym $mod+p exec --no-startup-id dmenu_run
+          bindsym  $mod+Return exec alacritty
+          default_border pixel 0
+          default_floating_border pixel 0
+          for_window [class="^.*"] border pixel 1
+          #bindsym $mod+p exec --no-startup-id dmenu_run
+          bindsym $mod+p exec rofi -show dmenu 
           bindsym $mod+Shift+c kill
           bindsym $mod+h focus left
           bindsym $mod+j focus down
@@ -172,27 +176,8 @@
           bindsym $mod+l focus right
           bindsym $mod+f fullscreen toggle
           bindsym Mod4+l exec "setxkbmap us; xsecurelock"
-          exec_always --no-startup-id /home/drachir/.config/polybar/launch.sh
-          exec_always --no-startup-id feh --bg-fill /home/drachir/Bilder/bg.jpg
+          exec_always --no-startup-id feh --bg-fill /home/drachir/Pictures/bg.jpg
         dest: /home/drachir/.config/i3/config
-    - name: setup that i3 can launch polybar
-      copy:
-        content: |
-          #!/bin/bash
-          killall -q polybar
-          polybar --config=/home/drachir/.config/polybar/config.ini mybar 2>&1 | tee /tmp/polybar.log & disown
-        dest: /home/drachir/.config/polybar/launch.sh
-        mode: '0755'
-    - name: configure polybar
-      copy:
-        content: |
-          [bar/mybar]
-          modules-right = date
-          [module/date]
-          type = internal/date
-          date= %Y-%m-%d
-        dest: /home/drachir/.config/polybar/config.ini
-        
 
 - name: install shell goodies and set them as default
   hosts: localhost
