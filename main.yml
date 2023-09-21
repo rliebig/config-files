@@ -81,6 +81,7 @@
           - gawk
           - gnupg
           - cron
+          - unattended-upgrades
         state: present
 
     - name: configure urxvt to not be ugly
