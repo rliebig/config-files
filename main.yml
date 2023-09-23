@@ -86,7 +86,13 @@
           - needrestart
           - unattended-upgrades
           - libpam-tmpdir
+          - qutebrowser
         state: present
+    - name: remove firefox and other things
+      apt:
+        name:
+          - firefox
+        state: absent
 
     - name: configure urxvt to not be ugly
       copy:
