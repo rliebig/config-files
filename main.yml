@@ -14,7 +14,7 @@
 
     - name: Set Fish Shell as the default shell
       user: 
-        name: drachir
+        name: user
         shell: /usr/bin/fish
 
     - name: Set Fish Shell for root as well
@@ -36,16 +36,6 @@
       apt:
         name: i3
         state: present
-
-    - name: configure i3 as default window manager
-      become: yes
-      command: 
-
-    - name: Restart XRDP
-      become: yes
-      service:
-        name: xrdp
-        state: restarted
 
 - name: set X Keyboard to default US keyboard
   hosts: localhost 
@@ -72,7 +62,6 @@
     - name: install alacritty, tmux, xsecurelock and feh
       apt:
         name: 
-          - alacritty
           - rofi
           - feh
           - xsecurelock
@@ -120,10 +109,10 @@
           *.color14: #868686
           *.color7: #b9b9b9
           *.color15: #f7f7f7
-        dest: /home/drachir/.Xdefaults
+        dest: /home/user/.Xdefaults
     - name: configure tmux to be actually usable
       copy:
-        content:
+        content: |
           set -g prefix C-a
           unbind C-b
           set -s escape-time 1
@@ -166,7 +155,7 @@
 
           set-option -g status-position bottom
           bind-key C send-keys " | xclip -selection clipboard"
-        dest: /home/drachir/.tmux.conf
+        dest: /home/user/.tmux.conf
         
     - name: set as default terminal for user drachir
       copy:
@@ -191,8 +180,8 @@
           bindsym $mod+l focus right
           bindsym $mod+f fullscreen toggle
           bindsym Mod4+l exec "setxkbmap us; xsecurelock"
-          exec_always --no-startup-id feh --bg-fill /home/drachir/Pictures/bg.jpg
-        dest: /home/drachir/.config/i3/config
+          exec_always --no-startup-id feh --bg-fill /home/user/Pictures/bg.jpg
+        dest: /home/user/.config/i3/config
 
 - name: install shell goodies and set them as default
   hosts: localhost
@@ -224,7 +213,9 @@
           alias ls 'exa'
           alias vim 'nvim'
           alias xclip 'xclip -selection c'
-        dest: /home/drachir/.config/fish/config.fish
+          set -gx PIP_HOME "/home/user/.local/bin"
+          set -gx PATH "$PIP_HOME" $PATH
+        dest: /home/user/.config/fish/config.fish
 
     - name: ensure that neovim config folder exists
       file:
