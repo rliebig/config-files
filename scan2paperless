@@ -1,0 +1,73 @@
+#!/bin/bash
+
+echo $@
+DUPLEX=,Duplex
+removeempty="true"
+
+[[ $1 == "-s" ]] && {
+	DUPLEX=""
+	removeempty=false
+	shift
+}
+
+[[ $1 == "-a" ]] && {
+	DUPLEX=,Duplex
+  removeempty="true"
+	shift
+}
+
+[[ $1 == "-d" ]] && {
+	DUPLEX=,Duplex
+	shift
+}
+
+pages=$1
+
+cleanup() {
+	echo finalizing pdf file.
+	img2pdf --pdfa --output /tmp/scan2paperless_$$.pdf /tmp/scan2paperless_$$.png && \
+	rm -f /tmp/scan2paperless_$$.png
+
+	post2paperless /tmp/scan2paperless_$$.pdf \
+		&& rm -f /tmp/scan2paperless_$$* \
+		|| echo upload failed, retaining file /tmp/scan2paperless_$$.pdf >&2
+}
+
+trap 'cleanup; exit 1' EXIT
+
+scanpage() {
+# A4 = 210mm x 295mm - allerdings schlägt der Schlitten dann an. => 284mm
+scanimage --resolution 300 --format png
+}
+
+prependzeros() {
+printf "%03d" "$1"
+}
+
+
+
+rm /tmp/scan2paperless_$$.png
+scanimage --format=png --resolution 300 --output-file=/tmp/scan2paperless_$$.png
+
+if $removeempty
+then
+	threshold=99
+	images=( )
+	values=( )
+	for f in /tmp/scan2paperless_$$.png
+	do
+		images[${#images[@]}]=$f
+		values[${#values[@]}]=$(convert $f -fuzz 02% -fill black +opaque white -fill white -opaque white -format "%[fx:100*mean]" info:)
+	done
+
+	for ((i=0;i<${#images[@]};i++))
+	do
+		if [[ $(echo "${values[i]} > $threshold" | bc -l) == "1" ]]
+		then
+			# bc will output 1 if the comparison is true, 0 otherwise
+			echo image ${images[i]} was found to be mostly white, removing.
+			rm ${images[i]}
+		fi
+	done
+fi
+
