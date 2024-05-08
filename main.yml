@@ -180,6 +180,7 @@
           bindsym $mod+l focus right
           bindsym $mod+f fullscreen toggle
           bindsym Mod4+l exec "setxkbmap us; xsecurelock"
+          bindsym Mod4+space exec setxkbmap -query | grep -q "layout:\s\+us" && setxkbmap de || setxkbmap us
           exec_always --no-startup-id feh --bg-fill /home/user/Pictures/bg.jpg
         dest: /home/user/.config/i3/config
 
