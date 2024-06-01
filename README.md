@@ -11,4 +11,8 @@ There are also some helper scripts contained here to ensure that
 Most of these resources are harvested form the internet and adjusted from my own purposes. Some noteworthy features about this configuration are:
 - Designed for focus: All program must stay in foreground, no tabs are allowed, no virtual desktops. 
 - Some Windows Shortcuts: Win+L works, language switching using Win+Space works as well as it does on a Windows desktop. This is to ensure my muscle memory does not trip me up.
+- i3 config is mostly dwm inspired(Alt+P and Ctrl+Shift+C work way more faster for me than)
 
+TODO:
+- rewrite ansible to pyinfra
+- remove dependency on username
