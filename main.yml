@@ -83,6 +83,16 @@
           - firefox
         state: absent
 
+    - name: configure qutebrowser to not display tabs
+      copy:
+        content: |
+          config_version: 2
+          tabs.show:
+            global: never
+          tabs.tabs_are_windows:
+            global: true
+        dest: /home/user/.config/qutebrowser/autoconfig.yml
+
     - name: configure urxvt to not be ugly
       copy:
         content: |
