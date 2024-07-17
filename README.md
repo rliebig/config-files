@@ -8,6 +8,12 @@ There are also some helper scripts contained here to ensure that
 - scan2paperless - modified paperless scan script so I do not have to perform the bothersome tasks of scanning, then saving, then opening a browser, then uploading to paperless, etc.
 - post2paperless - dependency for scan2paperless, actual upload logic.
 
+Execute using:
+```bash
+$ sudo apt install ansible
+$ ansible-playbook -I localhost main.yml
+```
+
 Most of these resources are harvested form the internet and adjusted from my own purposes. Some noteworthy features about this configuration are:
 - Designed for focus: All program must stay in foreground, no tabs are allowed, no virtual desktops. 
 - Some Windows Shortcuts: Win+L works, language switching using Win+Space works as well as it does on a Windows desktop. This is to ensure my muscle memory does not trip me up.
