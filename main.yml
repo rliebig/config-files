@@ -83,16 +83,6 @@
           - firefox
         state: absent
 
-    - name: configure qutebrowser to not display tabs
-      copy:
-        content: |
-          config_version: 2
-          tabs.show:
-            global: never
-          tabs.tabs_are_windows:
-            global: true
-        dest: /home/user/.config/qutebrowser/autoconfig.yml
-
     - name: configure urxvt to not be ugly
       copy:
         content: |
@@ -202,7 +192,7 @@
       apt:
         name:
           - bat
-          - exa
+          - eza
           - ack
           - neovim
         state: present
@@ -221,7 +211,7 @@
           set -g fish_greeting
           alias less 'batcat'
           alias cat 'batcat' 
-          alias ls 'exa'
+          alias ls 'eza'
           alias vim 'nvim'
           alias xclip 'xclip -selection c'
           set -gx PIP_HOME "/home/user/.local/bin"
@@ -240,7 +230,3 @@
           vim.opt.tabstop = 4
           vim.cmd [[ imap jj <ESC> ]]
         dest: /home/drachir/.config/nvim/init.lua
-    - name: install hosty and ensure adds are blocked
-      command: curl -L git.io/hosty | sh
-    - name: run hosty to ensure add blocks are in place
-      command: sudo hosty
