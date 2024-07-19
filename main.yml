@@ -10,9 +10,16 @@
         owner: user
         mode: 0644
 
-    - name: ensure that config folder exists
+    - name: ensure that i3 config folder exists
       file:
         path: /home/user/.config/i3
+        state: directory
+        owner: user
+        mode: 0644
+
+    - name: ensure that fish config folder exists
+      file:
+        path: /home/user/.config/fish
         state: directory
         owner: user
         mode: 0644
