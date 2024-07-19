@@ -15,7 +15,7 @@ autoinstall:
     - git # so we can clone the repository
       
   snaps:
-    - name: helix
+    - name: helix # it might be desirable to remove this from here, to ensure it installs with the rest of the software...
 
   # storage needs to be manual to allow for disk encryption!
   interactive-sections:
