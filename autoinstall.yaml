@@ -25,5 +25,6 @@ autoinstall:
   late-commands:
     - curtin in-target -- bash -c "mkdir /home/user" # this should have happend before
     - curtin in-target -- bash -c "cd /home/user; git clone https://github.com/rliebig/config-files.git"
+    - curtin in-target -- bash -c "chown user /home/user" # this should have happend before
     - curtin in-target -- bash -c "LC_ALL= ansible-playbook -I localhost /home/user/config-files/main.yml"
 
