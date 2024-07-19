@@ -26,7 +26,6 @@ autoinstall:
 
   
   late-commands:
-    - apt remove unity 
     - cd /home/user; git clone https://github.com/rliebig/config-files.git
     - ansible-playbook -I localhost /home/user/config-files/main.yml
 
