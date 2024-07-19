@@ -272,3 +272,11 @@
       apt:
         name: unity
         state: absent
+
+    - name: remove unity Xsessions file
+      file:
+        path: /usr/share/xsessions/ubuntu-xorg.desktop
+          
+    - name: remove unity Xsessions file
+      file:
+        path: /usr/share/xsessions/ubuntu.desktop
