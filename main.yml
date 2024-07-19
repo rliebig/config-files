@@ -8,21 +8,21 @@
         path: /home/user/.config
         state: directory
         owner: user
-        mode: 0644
+        group: user
 
     - name: ensure that i3 config folder exists
       file:
         path: /home/user/.config/i3
         state: directory
         owner: user
-        mode: 0644
+        group: user
 
     - name: ensure that fish config folder exists
       file:
         path: /home/user/.config/fish
         state: directory
         owner: user
-        mode: 0644
+        group: user
 
     - name: Update apt chache 
       apt:
@@ -133,6 +133,7 @@
           *.color15: #f7f7f7
         dest: /home/user/.Xdefaults
         owner: user
+        group: user
     - name: configure tmux to be actually usable
       copy:
         content: |
@@ -207,6 +208,7 @@
           exec_always --no-startup-id feh --bg-fill /home/user/Pictures/bg.jpg
         dest: /home/user/.config/i3/config
         owner: user
+        group: user
 
 - name: install shell goodies and set them as default
   hosts: localhost
@@ -239,12 +241,14 @@
           set -gx PATH "$PIP_HOME" $PATH
         dest: /home/user/.config/fish/config.fish
         owner: user
+        group: user
 
     - name: ensure that helix path is present
       file:
         path: /home/user/.config/helix
         state: directory
         owner: user
+        group: user
         mode: 0644
 
     - name: ensure that alacritty config folder exists
@@ -252,6 +256,7 @@
         path: /home/user/.config/alacritty
         state: directory
         owner: user
+        group: user
         mode: 0644
 
     - name: install helix
@@ -266,6 +271,7 @@
           theme = "dracula"
         dest: /home/user/.config/helix/config.toml
         owner: user
+        group: user
         mode: 06444
 
     - name: remove unity
