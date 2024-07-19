@@ -2,6 +2,9 @@
 
 I like to setup my computers mostly the same, running Ubuntu Linux with i3 wm. But I am simply with manually setting them up, hence the use of ansible.
 
+This setup was heavily inspired by Vitaly Parnas Blog Post about ("Single-Tasking Workflow in Linux with DWM")[https://vitalyparnas.com/posts/2018/09/linux-single-tasking/]. 
+He goes much beyond was is done here to achieve clear focus while using his computer.
+
 There are also some helper scripts contained here to ensure that I can use similar capapbilities.
 
 - shortcut-script.py - is a small watchdog script for my macro keyboard so I can have some tasks on a special keyboard itself.
