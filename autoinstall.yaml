@@ -3,7 +3,7 @@ autoinstall:
   identity:
     username: user
     realname: user
-    password: '.H13Dov69R6rMsgh7RBvtRUVsUpAuT7ceUmLD9utoQVnPsJsdwLhrY.Lqf9xYQz/' # changeme - nothing to find here :)
+    password: $6$6w5j4b1vXV8zijnu$OHIegMUveiUPlRCBUXCYwzXxiER3.dQuCTRT/G6..qNqCaBr7Bn2Ubi72e28QLZUxuIK6HvRo1pf/yC2OaBww0 # changeme - nothing to find here :)
     hostname: machine 
 
   refresh-installer: 
