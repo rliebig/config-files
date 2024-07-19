@@ -1,0 +1,28 @@
+autoinstall:
+  version: 1
+  identity:
+    username: user
+    realname: user
+    password: '.H13Dov69R6rMsgh7RBvtRUVsUpAuT7ceUmLD9utoQVnPsJsdwLhrY.Lqf9xYQz/' # changeme - nothing to find here :)
+    hostname: machine 
+
+  packages:
+    - ubuntu-desktop
+    - ansible
+      
+  snaps:
+    - name: helix
+
+  # storage needs to be manual to allow for disk encryption!
+  interactive-sections:
+    - storage
+
+  locale: en_US.UTF-8 # explicit is better than implicit
+
+  update: true 
+
+  
+  late-commands:
+    - cd /home/user; git clone https://github.com/rliebig/config-files.git
+    - ansible-playbook -I localhost /home/user/config-files/main.yml
+
