@@ -12,6 +12,7 @@ autoinstall:
   packages:
     - ubuntu-desktop
     - ansible
+    - git # so we can clone the repository
       
   snaps:
     - name: helix
