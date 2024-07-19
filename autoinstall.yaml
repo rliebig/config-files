@@ -6,6 +6,9 @@ autoinstall:
     password: '.H13Dov69R6rMsgh7RBvtRUVsUpAuT7ceUmLD9utoQVnPsJsdwLhrY.Lqf9xYQz/' # changeme - nothing to find here :)
     hostname: machine 
 
+  refresh-installer: 
+    update: true
+
   packages:
     - ubuntu-desktop
     - ansible
