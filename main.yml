@@ -3,6 +3,13 @@
   hosts: localhost
   become: true
   tasks:
+    - name: ensure that config folder exists
+      file:
+        path: /home/user/.config
+        state: directory
+        owner: user
+        mode: 0644
+
     - name: Update apt chache 
       apt:
         update_cache: true
