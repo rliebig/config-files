@@ -157,7 +157,7 @@
           bind-key C send-keys " | xclip -selection clipboard"
         dest: /home/user/.tmux.conf
         
-    - name: set as default terminal for user drachir
+    - name: set as default terminal for user user
       copy:
         content: |
           #!/bin/sh
@@ -220,7 +220,7 @@
 
     - name: ensure that neovim config folder exists
       file:
-        path: /home/drachir/.config/nvim
+        path: /home/user/.config/nvim
         state: directory
 
     - name: configure neovim to actually be usefull
@@ -229,4 +229,9 @@
           vim.opt.shiftwidth = 4
           vim.opt.tabstop = 4
           vim.cmd [[ imap jj <ESC> ]]
-        dest: /home/drachir/.config/nvim/init.lua
+        dest: /home/user/.config/nvim/init.lua
+
+    - name: remove unity
+      apt:
+        name: unity
+        state: absent

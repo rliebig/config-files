@@ -23,7 +23,6 @@ autoinstall:
   locale: en_US.UTF-8 # explicit is better than implicit
 
   update: true 
-
   
   late-commands:
     - cd /home/user; git clone https://github.com/rliebig/config-files.git
