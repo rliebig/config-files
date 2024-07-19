@@ -63,6 +63,7 @@
       apt:
         name: 
           - rofi
+          - git
           - feh
           - xsecurelock
           - tmux
@@ -215,10 +216,17 @@
           set -gx PATH "$PIP_HOME" $PATH
         dest: /home/user/.config/fish/config.fish
 
-    - name: ensure that neovim config folder exists
+    - name: ensure that helix path is present
       file:
-        path: /home/user/.config/nvim
+        path: /home/user/.config/helix
         state: directory
+
+    - name: ensure that alacritty config folder exists
+      file:
+        path: /home/user/.config/alacritty
+        state: directory
+
+
 
     - name: install helix
       command: snap install --classic helix
