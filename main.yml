@@ -1,11 +1,11 @@
 ---
 - name: Install fish shell and set it as the default shell
   hosts: localhost
-  become: yes
+  become: true
   tasks:
     - name: Update apt chache 
       apt:
-        update_cache: yes
+        update_cache: true
 
     - name: Install Fish Shell
       apt:
@@ -18,7 +18,7 @@
         shell: /usr/bin/fish
 
     - name: Set Fish Shell for root as well
-      become: yes
+      become: true
       user:
         name: root
         shell: /usr/bin/fish
@@ -27,28 +27,28 @@
   hosts: localhost
   tasks:
     - name: Update apt chache 
-      become: yes
+      become: true
       apt:
-        update_cache: yes
+        update_cache: true
 
     - name: Install i3 window manager
-      become: yes
+      become: true
       apt:
         name: i3
         state: present
 
 - name: set X Keyboard to default US keyboard
   hosts: localhost 
-  become: yes
+  become: true
   tasks:
     - name: Set the X Keyboard to the default US layout
-      become: yes
+      become: true
       lineinfile:
         path: /etc/default/keyboard
         regexp: '^XKBLAYOUT='
         line: 'XKBLAYOUT="us'
     - name: Change default non us keyboard to US
-      become: yes
+      become: true
       debconf:
         name: keyboard-configuration
         question: keyboard-configuration/xkb-keymap
@@ -111,6 +111,7 @@
           *.color7: #b9b9b9
           *.color15: #f7f7f7
         dest: /home/user/.Xdefaults
+        owner: user
     - name: configure tmux to be actually usable
       copy:
         content: |
@@ -173,7 +174,7 @@
           default_floating_border pixel 0
           for_window [class="^.*"] border pixel 1
           #bindsym $mod+p exec --no-startup-id dmenu_run
-          bindsym $mod+p exec rofi -show dmenu 
+          bindsym $mod+p exec rofi -show dmenu
           bindsym $mod+Shift+c kill
           bindsym $mod+h focus left
           bindsym $mod+j focus down
@@ -184,12 +185,13 @@
           bindsym Mod4+space exec setxkbmap -query | grep -q "layout:\s\+us" && setxkbmap de || setxkbmap us
           exec_always --no-startup-id feh --bg-fill /home/user/Pictures/bg.jpg
         dest: /home/user/.config/i3/config
+        owner: user
 
 - name: install shell goodies and set them as default
   hosts: localhost
-  become: yes
+  become: true
   tasks:
-    - name: install batcat and ack 
+    - name: install batcat and ack
       apt:
         name:
           - bat
@@ -215,16 +217,19 @@
           set -gx PIP_HOME "/home/user/.local/bin"
           set -gx PATH "$PIP_HOME" $PATH
         dest: /home/user/.config/fish/config.fish
+        owner: user
 
     - name: ensure that helix path is present
       file:
         path: /home/user/.config/helix
         state: directory
+        owner: user
 
     - name: ensure that alacritty config folder exists
       file:
         path: /home/user/.config/alacritty
         state: directory
+        owner: user
 
 
 
@@ -239,6 +244,7 @@
         content: |
           theme = "dracula"
         dest: /home/user/.config/helix/config.toml
+        owner: user
 
     - name: remove unity
       apt:
