@@ -188,11 +188,10 @@
   hosts: localhost
   become: yes
   tasks:
-    - name: install exa, batcat and ack 
+    - name: install batcat and ack 
       apt:
         name:
           - bat
-          - eza
           - ack
           - neovim
         state: present
@@ -211,7 +210,6 @@
           set -g fish_greeting
           alias less 'batcat'
           alias cat 'batcat' 
-          alias ls 'eza'
           alias vim 'nvim'
           alias xclip 'xclip -selection c'
           set -gx PIP_HOME "/home/user/.local/bin"
