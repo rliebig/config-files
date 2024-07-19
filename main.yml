@@ -193,7 +193,6 @@
         name:
           - bat
           - ack
-          - neovim
         state: present
 
     - name: install common dev packets
@@ -210,7 +209,7 @@
           set -g fish_greeting
           alias less 'batcat'
           alias cat 'batcat' 
-          alias vim 'nvim'
+          alias vim 'hx'
           alias xclip 'xclip -selection c'
           set -gx PIP_HOME "/home/user/.local/bin"
           set -gx PATH "$PIP_HOME" $PATH
@@ -221,13 +220,17 @@
         path: /home/user/.config/nvim
         state: directory
 
-    - name: configure neovim to actually be usefull
+    - name: install helix
+      command: snap install --classic helix
+
+    - name: install alacritty
+      command: snap install --classic alacritty
+
+    - name: configure helix for dracula theme
       copy:
         content: |
-          vim.opt.shiftwidth = 4
-          vim.opt.tabstop = 4
-          vim.cmd [[ imap jj <ESC> ]]
-        dest: /home/user/.config/nvim/init.lua
+          theme = "dracula"
+        dest: /home/user/.config/helix/config.toml
 
     - name: remove unity
       apt:
