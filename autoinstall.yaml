@@ -26,7 +26,7 @@ autoinstall:
   update: true 
   
   late-commands:
-    - curtin in-target -- mkdir /home/user # this should have happend before
-    - curtin in-target -- cd /home/user; git clone https://github.com/rliebig/config-files.git
-    - curtin in-target -- ansible-playbook -I localhost /home/user/config-files/main.yml
+    - curtin in-target -- bash -c "mkdir /home/user" # this should have happend before
+    - curtin in-target -- bash -c "cd /home/user; git clone https://github.com/rliebig/config-files.git"
+    - curtin in-target -- bash -c "ansible-playbook -I localhost /home/user/config-files/main.yml"
 
