@@ -10,6 +10,13 @@
         owner: user
         mode: 0644
 
+    - name: ensure that config folder exists
+      file:
+        path: /home/user/.config/i3
+        state: directory
+        owner: user
+        mode: 0644
+
     - name: Update apt chache 
       apt:
         update_cache: true
