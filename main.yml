@@ -280,3 +280,9 @@
     - name: remove unity Xsessions file
       file:
         path: /usr/share/xsessions/ubuntu.desktop
+
+    - name: remove gnome initial setup!
+      become: true
+      apt:
+        name: gnome-initial-setup
+        state: present
