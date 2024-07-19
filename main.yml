@@ -211,7 +211,7 @@
         content: |
           set -g fish_greeting
           alias less 'batcat'
-          alias cat 'batcat' 
+          alias cat 'batcat'
           alias vim 'hx'
           alias xclip 'xclip -selection c'
           set -gx PIP_HOME "/home/user/.local/bin"
@@ -224,14 +224,14 @@
         path: /home/user/.config/helix
         state: directory
         owner: user
+        mode: 0644
 
     - name: ensure that alacritty config folder exists
       file:
         path: /home/user/.config/alacritty
         state: directory
         owner: user
-
-
+        mode: 0644
 
     - name: install helix
       command: snap install --classic helix
@@ -245,6 +245,7 @@
           theme = "dracula"
         dest: /home/user/.config/helix/config.toml
         owner: user
+        mode: 06444
 
     - name: remove unity
       apt:
