@@ -85,6 +85,7 @@
         name: 
           - rofi
           - git
+          - papirus-icon-theme
           - feh
           - xsecurelock
           - tmux
