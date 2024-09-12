@@ -1,7 +1,6 @@
 ---
 - name: Install fish shell and set it as the default shell
   hosts: localhost
-  become: true
   tasks:
     - name: ensure that config folder exists
       file:
