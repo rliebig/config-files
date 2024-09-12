@@ -113,13 +113,8 @@
           - needrestart
           - unattended-upgrades
           - libpam-tmpdir
-          - qutebrowser
-        state: present
-    - name: remove firefox and other things
-      apt:
-        name:
           - firefox
-        state: absent
+        state: present
 
     - name: configure urxvt to not be ugly
       copy:
@@ -326,3 +321,5 @@
           /usr/sbin/gdm3
         dest: /etc/X11/default-display-manager
         
+    - name: trigger reboot to ensure that the graphical components are started
+      ansible.builtin.reboot:
