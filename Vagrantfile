@@ -6,7 +6,7 @@ Vagrant.configure(2) do |config|
 
   config.vm.box = "debian/bookworm64"
 
-  config.vm.provider "virtualbox" "virtualbox" do |vb|
+  config.vm.provider "virtualbox" do |vb|
     vb.name="rliebig-dev-machine"
 
     vb.gui=true

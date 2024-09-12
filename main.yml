@@ -113,7 +113,7 @@
           - needrestart
           - unattended-upgrades
           - libpam-tmpdir
-          - firefox
+          - firefox-esr
         state: present
 
     - name: configure urxvt to not be ugly
