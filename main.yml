@@ -1,7 +1,18 @@
 ---
 - name: Install fish shell and set it as the default shell
-  hosts: localhost
+  # hosts: localhost
+  hosts: default
+  become: yes
   tasks:
+    - name: create user 
+      user:
+        name: user
+        shell: /bin/bash
+        home: /home/user
+        password: "{{ 'changeme' | password_hash('sha512') }}"
+
+    
+
     - name: ensure that config folder exists
       file:
         path: /home/user/.config
@@ -27,6 +38,11 @@
       apt:
         update_cache: true
 
+    - name: install xserver
+      apt:
+        name: xorg
+        state: present
+
     - name: Install Fish Shell
       apt:
         name: fish
@@ -44,7 +60,7 @@
         shell: /usr/bin/fish
         
 - name: Install i3 as default window manager for xrdp
-  hosts: localhost
+  hosts: default
   tasks:
     - name: Update apt chache 
       become: true
@@ -57,26 +73,26 @@
         name: i3
         state: present
 
-- name: set X Keyboard to default US keyboard
-  hosts: localhost 
-  become: true
-  tasks:
-    - name: Set the X Keyboard to the default US layout
-      become: true
-      lineinfile:
-        path: /etc/default/keyboard
-        regexp: '^XKBLAYOUT='
-        line: 'XKBLAYOUT="us'
-    - name: Change default non us keyboard to US
-      become: true
-      debconf:
-        name: keyboard-configuration
-        question: keyboard-configuration/xkb-keymap
-        value: us
-        vtype: select
+# - name: set X Keyboard to default US keyboard
+#   hosts: default
+#   become: true
+#   tasks:
+#     - name: Set the X Keyboard to the default US layout
+#       become: true
+#       lineinfile:
+#         path: /etc/default/keyboard
+#         regexp: '^XKBLAYOUT='
+#         line: 'XKBLAYOUT="us'
+#     - name: Change default non us keyboard to US
+#       become: true
+#       debconf:
+#         name: keyboard-configuration
+#         question: keyboard-configuration/xkb-keymap
+#         value: us
+#         vtype: select
 
 - name: install urxvt, polybar and configure  i3
-  hosts: localhost
+  hosts: default
   become: yes
   tasks:
     - name: install alacritty, tmux, xsecurelock and feh
@@ -196,7 +212,7 @@
           default_floating_border pixel 0
           for_window [class="^.*"] border pixel 1
           #bindsym $mod+p exec --no-startup-id dmenu_run
-          bindsym $mod+p exec rofi -show dmenu
+          bindsym $mod+p exec rofi -show drun
           bindsym $mod+Shift+c kill
           bindsym $mod+h focus left
           bindsym $mod+j focus down
@@ -211,7 +227,7 @@
         group: user
 
 - name: install shell goodies and set them as default
-  hosts: localhost
+  hosts: default
   become: true
   tasks:
     - name: install batcat and ack
@@ -259,11 +275,16 @@
         group: user
         mode: 0644
 
-    - name: install helix
-      command: snap install --classic helix
+    # - name: install helix
+      # command: snap install --classic helix
 
-    - name: install alacritty
-      command: snap install --classic alacritty
+    # - name: install alacritty
+      # command: snap install --classic alacritty
+
+    - name:  install alacritty
+      apt:
+        name: alacritty
+        state: present
 
     - name: configure helix for dracula theme
       copy:
@@ -279,16 +300,29 @@
         name: unity
         state: absent
 
-    - name: remove unity Xsessions file
-      file:
-        path: /usr/share/xsessions/ubuntu-xorg.desktop
+    # - name: remove unity Xsessions file
+    #   file:
+    #     path: /usr/share/xsessions/ubuntu-xorg.desktop
           
-    - name: remove unity Xsessions file
-      file:
-        path: /usr/share/xsessions/ubuntu.desktop
+    # - name: remove unity Xsessions file
+    #   file:
+    #     path: /usr/share/xsessions/ubuntu.desktop
 
     - name: remove gnome initial setup!
       become: true
       apt:
         name: gnome-initial-setup
         state: present
+
+    - name: install gdm3 for graphical login
+      become: true
+      apt: 
+        name: gdm3
+        state: present
+
+    - name: ensure that gdm3 is started at boot
+      copy:
+        content: |
+          /usr/sbin/gdm3
+        dest: /etc/X11/default-display-manager
+        

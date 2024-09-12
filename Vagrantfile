@@ -1,10 +1,10 @@
 Vagrant.configure(2) do |config|
 
-  config.ssh.username = "user"
-  config.ssh.password = "changeme" # nothing to find here :)
+  # config.ssh.username = "user"
+  # config.ssh.password = "changeme" # nothing to find here :)
   config.ssh.insert_key = true
 
-  config.vm.box = "ubuntu/xenial64"
+  config.vm.box = "debian/bookworm64"
 
   config.vm.provider "virtualbox" "virtualbox" do |vb|
     vb.name="rliebig-dev-machine"
